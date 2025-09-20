@@ -64,6 +64,8 @@ Now visit 👉 [http://localhost:3000](http://localhost:3000)
 ```
 my-dark-neon-app/
  ├─ app/
+ |   ├─ about/
+          └─ page.tsx           # Home about page with neon UI + button
  │   ├─ globals.css        # Tailwind + custom neon CSS
  │   ├─ layout.tsx         # Root layout with manifest + meta
  │   └─ page.tsx           # Home page with neon UI + button
