@@ -1,36 +1,152 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌌 Dark Neon PWA ⚡
 
-## Getting Started
+A **Next.js 15 + PWA** project with a **dark neon cyan glow** theme.  
+Built with **React, TailwindCSS, and next-pwa**, installable on desktop/mobile as a native-like app.
 
-First, run the development server:
+---
+
+## 🖼 Screenshots
+
+| Neon Homepage               | Installed App              |
+| --------------------------- | -------------------------- |
+| ![Home](./docs/screen1.png) | ![App](./docs/screen3.png) |
+
+
+
+---
+
+## ✨ Features
+- 🎨 Dark theme with neon cyan glow (text + buttons)
+- 📱 Progressive Web App (installable, offline support)
+- ⚡ Built with **Next.js App Router**
+- 🛠 TailwindCSS styling + custom neon classes
+- 🔔 Service Worker with offline fallback page
+
+---
+
+## 🚀 Getting Started
+
+### 1️⃣ Clone & install
+```bash
+git clone https://github.com/Antot-12/PWA-testing-app.git
+cd my-dark-neon-app
+npm install
+````
+
+### 2️⃣ Development (no PWA)
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open 👉 [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+⚠️ In dev mode, **PWA is disabled**. You only see the app as a normal Next.js site.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+### 3️⃣ Production build (with PWA enabled)
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run build
+npm run start
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Now visit 👉 [http://localhost:3000](http://localhost:3000)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+* Chrome/Edge will show an **"Install App"** button (monitor icon or plus sign in the address bar).
+* Once installed, the app opens in its own **native-like window** 🎉
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📂 Project Structure
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+my-dark-neon-app/
+ ├─ app/
+ │   ├─ globals.css        # Tailwind + custom neon CSS
+ │   ├─ layout.tsx         # Root layout with manifest + meta
+ │   └─ page.tsx           # Home page with neon UI + button
+ ├─ public/
+ │   ├─ icons/             # PWA icons (192x192 + 512x512)
+ │   ├─ favicon.ico        # App favicon
+ │   ├─ manifest.json      # PWA config
+ │   └─ offline.html       # Offline fallback page
+ ├─ worker/
+ │   └─ index.js           # Custom Service Worker
+ ├─ next.config.js         # Next.js config + next-pwa
+ └─ package.json
+```
+
+---
+
+## 🎨 Styling
+
+Custom **neon cyan glow** is defined in `globals.css`:
+
+```css
+.neon-text {
+  color: #00ffff;
+  text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff, 0 0 20px #00ffff;
+}
+
+.neon-button {
+  @apply px-6 py-3 border-2 rounded-lg uppercase font-bold transition;
+  color: #00ffff;
+  border-color: #00ffff;
+  text-shadow: 0 0 5px #00ffff;
+  box-shadow: 0 0 10px #00ffff, inset 0 0 20px #00ffff;
+}
+
+.neon-button:hover {
+  background-color: #00ffff;
+  color: black;
+  box-shadow: 0 0 20px #00ffff, inset 0 0 40px #00ffff;
+}
+```
+
+---
+
+## 🔧 PWA Setup
+
+* `manifest.json` defines app name, icons, colors.
+* `next-pwa` auto-generates `sw.js` in `public/`.
+* `worker/index.js` extends the Service Worker with **offline support**:
+
+```js
+import { precacheAndRoute } from 'workbox-precaching';
+
+// Required for Workbox!
+precacheAndRoute(self.__WB_MANIFEST);
+
+self.addEventListener('fetch', (event) => {
+  if (!navigator.onLine && event.request.mode === 'navigate') {
+    event.respondWith(caches.match('/offline.html'));
+  }
+});
+```
+
+📌 This ensures when offline, the app shows a nice fallback page.
+
+---
+
+## 📱 Installing as App
+
+1. Run the app in **production mode**
+2. Open in Chrome / Edge → look for the **install icon** in the address bar
+   ![Install App Button](./docs/install.png)
+3. Click **Install** → now it runs in its own window 🚀
+
+On **Android**, open in Chrome → ⋮ → *Add to Home screen*.
+
+---
+
+## 🛠 Tech Stack
+
+* [Next.js 15](https://nextjs.org/)
+* [React 19](https://react.dev/)
+* [TailwindCSS](https://tailwindcss.com/)
+* [next-pwa](https://github.com/shadowwalker/next-pwa)
+* [Workbox](https://developer.chrome.com/docs/workbox/)
+
+---
